@@ -108,4 +108,26 @@ class CSVWriter(Writer):
         csvwriter.writerows(outputlist)
         self.file.close()
         
+class TextWriter(Writer):
+    """Writer object for text file as output
+
+    Format is
+    +919900123456 - 2008-05-26 12:42:32
+    Message contents goes here
+
+    +919900123456 - 2008-05-26 12:50:32
+    Second message contents goes here
+
+    Ignores empty messages
+    """
+    def write(self):
+        """Read every message in the list and write to a CSV file
+        """
+        tmpl = "%s - %s\n%s\n\n"
+        for msg in self.messages:
+            if msg['telno'] == '':
+                continue
+            txtstr = tmpl %(msg['telno'], msg['date'].strftime('%Y-%m-%d %H:%M:%S'), msg['body'])
+            self.file.write(txtstr)
+        self.file.close()
         
