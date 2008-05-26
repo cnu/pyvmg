@@ -54,7 +54,7 @@ class VMGReader(object):
                 data['date'] = datetime.datetime.strptime('1970-01-01 00:00:00', '%Y-%m-%d %H:%M:%S')
         bodymatch = self.bodyre.search(self.message)
         if bodymatch:
-            data['body'] = escapexml(bodymatch.group(1))
+            data['body'] = escapexml(bodymatch.group(1))[:-1]
         else:
             data['body'] = ''
         return data
