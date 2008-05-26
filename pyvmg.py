@@ -1,5 +1,6 @@
 import re
 import glob
+import csv
 import datetime
 
 def escapexml(xmldata):
@@ -93,4 +94,18 @@ class XMLWriter(Writer):
             self.file.write(xmlstr)
         self.file.write('</messages>')
         self.file.close()
+        
+class CSVWriter(Writer):
+    """Writer object for CSV file as output
+    """
+    def write(self):
+        """Read every message in the list and write to a CSV file
+        """
+        csvwriter = csv.writer(self.file)
+        outputlist = [('telno', 'date', 'body')]
+        for msg in self.messages:
+            outputlist.append((msg['telno'], msg['date'].strftime('%Y-%m-%d %H:%M:%S'), msg['body']))
+        csvwriter.writerows(outputlist)
+        self.file.close()
+        
         
